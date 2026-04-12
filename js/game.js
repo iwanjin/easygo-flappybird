@@ -97,16 +97,19 @@ const Game = (() => {
     const gravity = config.gravity || 0.22;
     const maxFall = config.maxFallSpeed || 9;
 
-    // 중력 적용
-    bird.velocity += gravity;
+    // ✅ delta를 초 단위로 정규화 (ms → sec)
+    const deltaInSeconds = Math.max(delta, 16) / 1000;  // 최소 16ms
+
+    // 중력 적용 (속도 업데이트)
+    bird.velocity += gravity * deltaInSeconds;
 
     // 최대 낙하속도 제한
     if (bird.velocity > maxFall) {
       bird.velocity = maxFall;
     }
 
-    // 위치 업데이트
-    bird.y += bird.velocity;
+    // 위치 업데이트 (거리 = 속도 * 시간)
+    bird.y += bird.velocity * deltaInSeconds;
 
     // 회전각 계산 (시각 피드백)
     bird.rotation = Math.min(90, bird.velocity * 15);
@@ -119,11 +122,15 @@ const Game = (() => {
     const pipeSpeed = config.pipeSpeed || 2;
     const pipeSpacing = config.pipeSpacing || 220;
     const gapSize = config.gapSize || 130;
-    const canvasHeight = 480;
+    const canvas = document.getElementById('gameCanvas');
+    const canvasHeight = canvas ? canvas.height : 600;  // ✅ 실제 canvas 높이
 
-    // 기존 파이프 이동
+    // ✅ delta를 초 단위로 정규화
+    const deltaInSeconds = Math.max(delta, 16) / 1000;
+
+    // 기존 파이프 이동 (✅ deltaInSeconds 사용)
     pipes.forEach(pipe => {
-      pipe.x -= pipeSpeed * (delta / 1000);
+      pipe.x -= pipeSpeed * deltaInSeconds;
     });
 
     // 화면 밖 파이프 제거
@@ -247,7 +254,8 @@ const Game = (() => {
       // 게임 상태 초기화
       state = STATE.IDLE;
       score = 0;
-      bird.y = 240;
+      // ✅ canvas height 600의 중간 정도 위치 (약 225px)
+      bird.y = 225;
       bird.velocity = 0;
       bird.rotation = 0;
       pipes = [];
