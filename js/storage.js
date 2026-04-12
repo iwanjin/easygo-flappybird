@@ -121,6 +121,43 @@ const Storage = (() => {
   }
 
   /**
+   * 공개 API: 평균 점수 (Phase 2)
+   * @returns {number} 평균 점수
+   */
+  function getAverageScore() {
+    const scores = getAllScores();
+    if (scores.length === 0) return 0;
+    const sum = scores.reduce((a, b) => a + b.score, 0);
+    return Math.round(sum / scores.length);
+  }
+
+  /**
+   * 공개 API: 게임 플레이 횟수 (Phase 2)
+   * @returns {number} 게임 횟수
+   */
+  function getPlayCount() {
+    return getAllScores().length;
+  }
+
+  /**
+   * 공개 API: 총 점수 (Phase 2)
+   * @returns {number} 모든 게임의 총 점수
+   */
+  function getTotalScore() {
+    return getAllScores().reduce((a, b) => a + b.score, 0);
+  }
+
+  /**
+   * 공개 API: 최고점 달성 횟수 (Phase 2)
+   * @returns {number} 최고점과 같은 점수를 달성한 횟수
+   */
+  function getBestScoreAchievedCount() {
+    const best = getBestScore();
+    if (best === 0) return 0;
+    return getAllScores().filter(s => s.score === best).length;
+  }
+
+  /**
    * 공개 API: 데이터 내보내기 (디버그 용)
    * @returns {Object} 모든 저장 데이터
    */
@@ -129,7 +166,13 @@ const Storage = (() => {
       bestScore: getBestScore(),
       scores: getAllScores(),
       top3: getTop3(),
-      muted: isMuted()
+      muted: isMuted(),
+      stats: {
+        average: getAverageScore(),
+        playCount: getPlayCount(),
+        totalScore: getTotalScore(),
+        bestAchievedCount: getBestScoreAchievedCount()
+      }
     };
   }
 
@@ -141,6 +184,10 @@ const Storage = (() => {
     getAllScores,
     isMuted,
     setMuted,
+    getAverageScore,
+    getPlayCount,
+    getTotalScore,
+    getBestScoreAchievedCount,
     export
   };
 })();

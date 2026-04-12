@@ -109,6 +109,56 @@ const UI = (() => {
   }
 
   /**
+   * 배지 표시 (Phase 2)
+   * @param {string} emoji - 배지 이모지
+   * @param {string} title - 배지 제목
+   */
+  function showBadge(emoji, title) {
+    const badgeContainer = document.createElement('div');
+    badgeContainer.className = 'achievement-badge';
+    badgeContainer.innerHTML = `
+      <div style="font-size: 48px; margin-bottom: 8px;">${emoji}</div>
+      <div style="font-size: 14px; font-weight: bold;">${title}</div>
+    `;
+
+    // 게임오버 화면에 추가
+    const gameoverScreen = document.getElementById('gameover-screen');
+    if (gameoverScreen) {
+      gameoverScreen.appendChild(badgeContainer);
+
+      // 3초 후 제거 (CSS 애니메이션)
+      setTimeout(() => {
+        badgeContainer.style.opacity = '0';
+        setTimeout(() => badgeContainer.remove(), 300);
+      }, 2700);
+    }
+  }
+
+  /**
+   * 달성한 배지 목록 조회 (Phase 2)
+   * @param {number} score - 현재 점수
+   * @returns {array} 배지 배열 [{ emoji, title }, ...]
+   */
+  function getAchievedBadges(score) {
+    const badges = [];
+
+    if (score > 0) {
+      badges.push({ emoji: '🥇', title: '첫 도전' });
+    }
+    if (score >= 10) {
+      badges.push({ emoji: '🎯', title: '10점 달성' });
+    }
+    if (score >= 50) {
+      badges.push({ emoji: '🏅', title: '50점 달성' });
+    }
+    if (score >= 100) {
+      badges.push({ emoji: '👑', title: '100점 달성' });
+    }
+
+    return badges;
+  }
+
+  /**
    * 게임 오버 화면 표시
    * A팀의 'game:over' 이벤트에서 호출
    * @param {object} result - { score, character }
@@ -149,6 +199,31 @@ const UI = (() => {
         span.textContent = '-';
         li.appendChild(span);
         topScoresList.appendChild(li);
+      }
+    }
+
+    // 🏆 Phase 2: 배지 표시
+    const badges = getAchievedBadges(result.score || 0);
+    badges.forEach((badge, index) => {
+      setTimeout(() => {
+        showBadge(badge.emoji, badge.title);
+      }, index * 500);  // 500ms 간격으로 배지 표시
+    });
+
+    // 📊 Phase 2: 통계 표시
+    if (typeof Storage !== 'undefined') {
+      const avgScoreSpan = document.getElementById('avg-score');
+      const playCountSpan = document.getElementById('play-count');
+      const totalScoreSpan = document.getElementById('total-score');
+
+      if (avgScoreSpan) {
+        avgScoreSpan.textContent = String(Storage.getAverageScore());
+      }
+      if (playCountSpan) {
+        playCountSpan.textContent = String(Storage.getPlayCount());
+      }
+      if (totalScoreSpan) {
+        totalScoreSpan.textContent = String(Storage.getTotalScore());
       }
     }
 
@@ -232,5 +307,15 @@ const UI = (() => {
 
 // ===== 게임 시작 시 초기화 =====
 document.addEventListener('DOMContentLoaded', () => {
+  // Theme 모듈 초기화 (Phase 2) - 가장 먼저 실행
+  if (typeof Theme !== 'undefined' && Theme.init) {
+    Theme.init();
+  }
+
   UI.init();
+
+  // Confetti 모듈 초기화 (Phase 2)
+  if (typeof Confetti !== 'undefined' && Confetti.init) {
+    Confetti.init();
+  }
 });

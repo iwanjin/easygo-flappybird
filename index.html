@@ -63,6 +63,25 @@
         </ol>
       </div>
 
+      <!-- 통계 (Phase 2) -->
+      <div id="stats-container" class="stats-display">
+        <h3>📊 통계</h3>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <span class="stat-label">평균 점수</span>
+            <span class="stat-value" id="avg-score">-</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">게임 횟수</span>
+            <span class="stat-value" id="play-count">-</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">총 점수</span>
+            <span class="stat-value" id="total-score">-</span>
+          </div>
+        </div>
+      </div>
+
       <!-- 재시작 -->
       <button id="restart-btn" class="btn-primary">다시 시작</button>
     </section>
@@ -73,8 +92,9 @@
   <script src="js/storage.js"></script>     <!-- Storage API (localStorage) -->
   <script src="js/sound.js"></script>       <!-- Sound API (Web Audio) -->
   <script src="js/renderer.js"></script>    <!-- Renderer (Canvas) -->
+  <script src="js/theme.js"></script>       <!-- Theme 테마 시스템 (Phase 2) -->
   <script src="js/ui.js"></script>          <!-- UI 제어 -->
   <script src="js/game.js"></script>        <!-- 게임 로직 (모든 로직 포함) -->
-  <!-- <script src="js/confetti.js"></script> --> <!-- 축하 효과 (선택사항) -->
+  <script src="js/confetti.js"></script>   <!-- Confetti 축하 애니메이션 (Phase 2) -->
 </body>
 </html>

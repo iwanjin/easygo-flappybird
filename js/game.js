@@ -315,3 +315,49 @@ const Game = (() => {
     // ✅ updateBestScore() 제거 (Storage API에서 관리)
   };
 })();
+
+// ===== Phase 2: 모바일 최적화 =====
+(() => {
+  /**
+   * 클릭/터치 이벤트 리스너
+   * PC: 클릭
+   * 모바일: 터치 (클릭도 동작함)
+   */
+  function setupInputListeners() {
+    const gameCanvas = document.getElementById('gameCanvas');
+    if (!gameCanvas) return;
+
+    // 마우스 클릭
+    gameCanvas.addEventListener('click', () => {
+      Game.jump();
+    });
+
+    // 터치 이벤트 (모바일)
+    gameCanvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();  // 스크롤 방지
+      Game.jump();
+    }, { passive: false });
+
+    // 키보드 스페이스 바
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        Game.jump();
+      }
+    });
+
+    console.log('[Game] 입력 이벤트 리스너 설정 완료 (click, touch, spacebar)');
+  }
+
+  // DOMContentLoaded 후 설정
+  document.addEventListener('DOMContentLoaded', () => {
+    setupInputListeners();
+  });
+
+  // 또는 즉시 설정 (DOM 준비 시간이 충분한 경우)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupInputListeners);
+  } else {
+    setupInputListeners();
+  }
+})();
