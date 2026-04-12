@@ -14,11 +14,8 @@ const Renderer = (() => {
       }
 
       ctx = canvas.getContext('2d');
-
-      // Canvas 크기 설정 (HTML 속성값 유지: 400x600)
-      // ✅ 고정값 대신 HTML 속성값 사용
-      canvas.width = 400;
-      canvas.height = 600;
+      // ✅ canvas.width/height 변경 안 함 (HTML 속성값 사용)
+      // JavaScript에서 변경하면 canvas가 리셋됨!
 
       // 배경 초기화
       ctx.fillStyle = '#87CEEB';
