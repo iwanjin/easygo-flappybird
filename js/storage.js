@@ -161,7 +161,7 @@ const Storage = (() => {
    * 공개 API: 데이터 내보내기 (디버그 용)
    * @returns {Object} 모든 저장 데이터
    */
-  function export() {
+  function exportData() {
     return {
       bestScore: getBestScore(),
       scores: getAllScores(),
@@ -188,6 +188,6 @@ const Storage = (() => {
     getPlayCount,
     getTotalScore,
     getBestScoreAchievedCount,
-    export
+    exportData
   };
 })();
