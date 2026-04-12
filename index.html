@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>플래피버드</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- ===== 화면 1: 시작 화면 ===== -->
+    <section id="start-screen" class="screen">
+      <h1>플래피버드 🐦</h1>
+
+      <!-- 난이도 선택 -->
+      <div class="difficulty-select">
+        <p>난이도를 선택하세요:</p>
+        <button class="difficulty-btn" data-difficulty="easy">🟢 쉬움</button>
+        <button class="difficulty-btn" data-difficulty="medium">🟡 보통</button>
+        <button class="difficulty-btn" data-difficulty="hard">🔴 어려움</button>
+      </div>
+
+      <!-- 게임 시작 -->
+      <button id="start-btn" class="btn-primary">게임 시작</button>
+    </section>
+
+    <!-- ===== 화면 2: 게임 화면 ===== -->
+    <section id="game-screen" class="screen hidden">
+      <!-- 게임 정보 헤더 -->
+      <div id="game-info">
+        <div id="score">점수: <span>0</span></div>
+      </div>
+
+      <!-- 게임판 (Canvas) -->
+      <canvas id="gameCanvas" width="400" height="600"></canvas>
+
+      <!-- 게임 중 버튼 -->
+      <button id="pause-btn" class="btn-secondary">일시정지</button>
+    </section>
+
+    <!-- ===== 화면 3: 게임 오버 화면 ===== -->
+    <section id="gameover-screen" class="screen hidden">
+      <h2 id="end-message">게임 오버!</h2>
+
+      <!-- 최종 점수 -->
+      <div id="final-score" class="score-display">
+        최종 점수: <span>0</span>
+      </div>
+
+      <!-- 최고 기록 -->
+      <div id="best-score" class="score-display">
+        최고 기록: <span>0</span>
+      </div>
+
+      <!-- TOP 3 -->
+      <div id="top-scores-container">
+        <h3>TOP 3 점수</h3>
+        <ol id="top-scores-list" class="top-scores">
+          <li><span class="score-value">-</span></li>
+          <li><span class="score-value">-</span></li>
+          <li><span class="score-value">-</span></li>
+        </ol>
+      </div>
+
+      <!-- 재시작 -->
+      <button id="restart-btn" class="btn-primary">다시 시작</button>
+    </section>
+
+  </div>
+
+  <!-- 스크립트 로드 순서 (필수) -->
+  <script src="js/difficulty.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/sound.js"></script>
+  <script src="js/physics.js"></script>
+  <script src="js/bird.js"></script>
+  <script src="js/pipes.js"></script>
+  <script src="js/renderer.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/confetti.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
