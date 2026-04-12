@@ -52,9 +52,10 @@ const UI = (() => {
       startBtn.addEventListener('click', () => {
         console.log('게임 시작:', selectedDifficulty);
 
-        // A팀의 Game.start() 호출
-        if (typeof Game !== 'undefined' && Game.start) {
-          Game.start(selectedDifficulty);
+        // A팀의 Game API 호출
+        if (typeof Game !== 'undefined' && Game.init && Game.start) {
+          Game.init(selectedDifficulty, 0);  // 난이도, 캐릭터
+          Game.start();
           showScreen('game');
         } else {
           console.error('Game 모듈을 찾을 수 없습니다');
@@ -110,7 +111,7 @@ const UI = (() => {
   /**
    * 게임 오버 화면 표시
    * A팀의 'game:over' 이벤트에서 호출
-   * @param {object} result - { score, bestScore, top3Scores }
+   * @param {object} result - { score, character }
    */
   function showGameOverScreen(result) {
     // 최종 점수
@@ -119,24 +120,36 @@ const UI = (() => {
       finalScoreSpan.textContent = String(result.score || 0);
     }
 
-    // 최고 기록
+    // ✅ 최고 기록 - Storage API에서 직접 조회
     const bestScoreSpan = document.querySelector('#best-score span');
-    if (bestScoreSpan) {
-      bestScoreSpan.textContent = String(result.bestScore || 0);
+    if (bestScoreSpan && typeof Storage !== 'undefined') {
+      const bestScore = Storage.getBestScore();
+      bestScoreSpan.textContent = String(bestScore || 0);
     }
 
-    // TOP 3 점수
+    // ✅ TOP 3 점수 - Storage API에서 직접 조회
     const topScoresList = document.getElementById('top-scores-list');
-    if (topScoresList && result.top3Scores) {
+    if (topScoresList && typeof Storage !== 'undefined') {
+      const top3 = Storage.getTop3();
       topScoresList.innerHTML = '';
-      result.top3Scores.forEach(score => {
+      top3.forEach(item => {
         const li = document.createElement('li');
         const span = document.createElement('span');
         span.className = 'score-value';
-        span.textContent = String(score);
+        span.textContent = String(item.score || 0);
         li.appendChild(span);
         topScoresList.appendChild(li);
       });
+
+      // 부족한 항목 채우기 (3개 미만일 경우)
+      while (topScoresList.children.length < 3) {
+        const li = document.createElement('li');
+        const span = document.createElement('span');
+        span.className = 'score-value';
+        span.textContent = '-';
+        li.appendChild(span);
+        topScoresList.appendChild(li);
+      }
     }
 
     // 게임 오버 화면 표시

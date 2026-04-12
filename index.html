@@ -69,16 +69,12 @@
 
   </div>
 
-  <!-- 스크립트 로드 순서 (필수) -->
-  <script src="js/difficulty.js"></script>
-  <script src="js/storage.js"></script>
-  <script src="js/sound.js"></script>
-  <script src="js/physics.js"></script>
-  <script src="js/bird.js"></script>
-  <script src="js/pipes.js"></script>
-  <script src="js/renderer.js"></script>
-  <script src="js/ui.js"></script>
-  <script src="js/confetti.js"></script>
-  <script src="js/game.js"></script>
+  <!-- 스크립트 로드 순서 (필수! storage가 가장 먼저) -->
+  <script src="js/storage.js"></script>     <!-- Storage API (localStorage) -->
+  <script src="js/sound.js"></script>       <!-- Sound API (Web Audio) -->
+  <script src="js/renderer.js"></script>    <!-- Renderer (Canvas) -->
+  <script src="js/ui.js"></script>          <!-- UI 제어 -->
+  <script src="js/game.js"></script>        <!-- 게임 로직 (모든 로직 포함) -->
+  <!-- <script src="js/confetti.js"></script> --> <!-- 축하 효과 (선택사항) -->
 </body>
 </html>
