@@ -15,9 +15,10 @@ const Renderer = (() => {
 
       ctx = canvas.getContext('2d');
 
-      // Canvas 크기 설정
-      canvas.width = 320;
-      canvas.height = 480;
+      // Canvas 크기 설정 (HTML 속성값 유지: 400x600)
+      // ✅ 고정값 대신 HTML 속성값 사용
+      canvas.width = 400;
+      canvas.height = 600;
 
       // 배경 초기화
       ctx.fillStyle = '#87CEEB';
@@ -39,8 +40,8 @@ const Renderer = (() => {
       pipes.forEach(pipe => {
         // 위 파이프
         ctx.fillRect(pipe.x, 0, pipe.width, pipe.topHeight);
-        // 아래 파이프
-        ctx.fillRect(pipe.x, pipe.bottomY, pipe.width, 480 - pipe.bottomY);
+        // 아래 파이프 (✅ canvas.height 사용)
+        ctx.fillRect(pipe.x, pipe.bottomY, pipe.width, canvas.height - pipe.bottomY);
       });
 
       // 새 그리기 (이모지)

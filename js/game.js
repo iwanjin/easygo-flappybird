@@ -150,7 +150,7 @@ const Game = (() => {
    */
   function checkCollision() {
     const margin = 2;  // 관대한 히트박스
-    const canvasHeight = 480;
+    const canvasHeight = 600;  // ✅ HTML canvas height와 일치
 
     const birdBox = {
       left: bird.x + margin,
