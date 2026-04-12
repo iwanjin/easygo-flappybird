@@ -92,24 +92,25 @@ const Game = (() => {
 
   /**
    * 중력 + 점프 물리 계산
+   * gravity와 jumpVelocity는 프레임 단위(60fps 기준)로 정의됨
    */
   function updatePhysics(delta) {
     const gravity = config.gravity || 0.22;
     const maxFall = config.maxFallSpeed || 9;
 
-    // ✅ delta를 초 단위로 정규화 (ms → sec)
-    const deltaInSeconds = Math.max(delta, 16) / 1000;  // 최소 16ms
+    // ✅ delta를 프레임 단위로 정규화 (60fps = 16.67ms/frame)
+    const deltaInFrames = Math.max(delta, 16) / 16.67;
 
-    // 중력 적용 (속도 업데이트)
-    bird.velocity += gravity * deltaInSeconds;
+    // 중력 적용 (프레임 단위)
+    bird.velocity += gravity * deltaInFrames;
 
     // 최대 낙하속도 제한
     if (bird.velocity > maxFall) {
       bird.velocity = maxFall;
     }
 
-    // 위치 업데이트 (거리 = 속도 * 시간)
-    bird.y += bird.velocity * deltaInSeconds;
+    // 위치 업데이트 (프레임 단위)
+    bird.y += bird.velocity * deltaInFrames;
 
     // 회전각 계산 (시각 피드백)
     bird.rotation = Math.min(90, bird.velocity * 15);
@@ -117,6 +118,7 @@ const Game = (() => {
 
   /**
    * 파이프 생성 및 이동
+   * pipeSpeed는 프레임 단위(60fps 기준)로 정의됨
    */
   function updatePipes(delta) {
     const pipeSpeed = config.pipeSpeed || 2;
@@ -125,12 +127,12 @@ const Game = (() => {
     const canvas = document.getElementById('gameCanvas');
     const canvasHeight = canvas ? canvas.height : 600;  // ✅ 실제 canvas 높이
 
-    // ✅ delta를 초 단위로 정규화
-    const deltaInSeconds = Math.max(delta, 16) / 1000;
+    // ✅ delta를 프레임 단위로 정규화 (60fps = 16.67ms/frame)
+    const deltaInFrames = Math.max(delta, 16) / 16.67;
 
-    // 기존 파이프 이동 (✅ deltaInSeconds 사용)
+    // 기존 파이프 이동 (프레임 단위)
     pipes.forEach(pipe => {
-      pipe.x -= pipeSpeed * deltaInSeconds;
+      pipe.x -= pipeSpeed * deltaInFrames;
     });
 
     // 화면 밖 파이프 제거
