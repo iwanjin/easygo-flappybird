@@ -57,6 +57,7 @@ const Game = (() => {
       // 3. 충돌 감지
       if (checkCollision()) {
         state = STATE.GAMEOVER;
+        console.log('[Game] 충돌 감지! bird.y =', bird.y, 'score =', score);
 
         // ✅ Storage에 점수 저장 (신기록 판정도 함)
         Storage.saveBestScore(score);
@@ -130,6 +131,8 @@ const Game = (() => {
 
     // 새 파이프 생성
     if (pipes.length === 0 || pipes[pipes.length - 1].x < 320 - pipeSpacing) {
+      const canvas = document.getElementById('gameCanvas');
+      const canvasHeight = canvas ? canvas.height : 600;  // ✅ 실제 canvas 높이
       const minGapY = 50;
       const maxGapY = canvasHeight - gapSize - 50;
       const gapY = minGapY + Math.random() * (maxGapY - minGapY);
@@ -150,7 +153,8 @@ const Game = (() => {
    */
   function checkCollision() {
     const margin = 2;  // 관대한 히트박스
-    const canvasHeight = 600;  // ✅ HTML canvas height와 일치
+    const canvas = document.getElementById('gameCanvas');
+    const canvasHeight = canvas ? canvas.height : 600;  // ✅ 실제 canvas 높이 사용
 
     const birdBox = {
       left: bird.x + margin,
@@ -262,8 +266,12 @@ const Game = (() => {
      * 게임 시작 (IDLE → PLAYING)
      */
     start() {
-      if (state !== STATE.IDLE) return;
+      if (state !== STATE.IDLE) {
+        console.warn('[Game] 게임이 이미 시작되었습니다. state =', state);
+        return;
+      }
 
+      console.log('[Game] 게임 시작! config =', config);
       state = STATE.PLAYING;
       lastFrameTime = 0;
 
@@ -274,6 +282,7 @@ const Game = (() => {
 
       // 게임 루프 시작
       gameLoopId = requestAnimationFrame(gameLoop);
+      console.log('[Game] requestAnimationFrame 시작');
     },
 
     /**
