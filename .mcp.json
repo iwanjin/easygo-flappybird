@@ -1,0 +1,24 @@
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "@anthropic-ai/inspector"
+      ],
+      "env": {
+        "CHROME_PORT": "9222"
+      }
+    },
+    "web-server": {
+      "command": "python",
+      "args": [
+        "-m",
+        "http.server",
+        "8000"
+      ],
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      }
+    }
+  }
+}
